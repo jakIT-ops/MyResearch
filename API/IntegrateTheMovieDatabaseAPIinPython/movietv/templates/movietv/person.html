@@ -1,0 +1,112 @@
+{% extends "movietv/base.html" %}
+
+{% block title %}
+   Person
+{% endblock %}
+
+{% block main %}
+<div class="container first" style="background-color: #d6d6d6; min-height: 600px;"> 
+
+    {% if person.profile_path %}
+        <img src="https://image.tmdb.org/t/p/w200{{ person.profile_path }}" alt="..." style="border-radius:15px; margin-left: 30px; margin-top: 30px;" >
+    {%else%}
+        {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="margin-top: 30px;border-radius:10px; width:170px; height:275px">
+    {%endif%}
+    <div class="col mov-info" style="color:#000000; margin-left:350px; margin-top: -300px; min-height: 290px;" >
+        <h2>{{person.name}}</h2><p>Popularity: {{person.popularity}}</p><br>
+        <h3>Personal Info</h3>
+        {% if person.gender == 2 %}
+            <p><b>Gender: </b>Male</p>
+        {%else%}
+            <p><b>Gender: </b>Female</p>
+        {%endif%}
+        <p><b>Known for: </b>{{person.known_for_department}}</p>
+        <p><b>Birthdate: </b>{{person.birthday}}</p>
+        <p><b>Place of Birth: </b>{{person.place_of_birth}}</p>
+        <p><b>Also known as: </b> 
+            {% for g in person.also_known_as %}
+                <h8>{{g}} |</h8>
+            {% endfor %}
+        </p>
+
+    </div>
+    <div class="col overview" style="color:black; margin-left: 30px; margin-right: 260px; font-size: medium;">
+        <h3>Biography</h3>
+        {%if person.biography%}
+            <p>{{person.biography}}</p>
+        {%else%}
+            <p>No conetnt.</p>
+        {%endif%}
+    </div>
+
+    <div class="knownfor" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Known for</h2></div>
+    
+    <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+        {% if credit.cast %}
+
+                {% for c in credit.cast %}
+                        <div class="flip-card" style="display: inline-block;">
+                            <div class="flip-card-inner" >
+                            <div class="flip-card-front" >
+                                {% if c.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                                {% else %}
+                                {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                                {% endif %}
+                            </div>
+                            <div class="flip-card-back">
+                                <br>
+                                {% if c.media_type == 'movie' %}
+                                    <h4>{{c.title}}</h4><br>
+                                    <p>Media Type: Movie</p>
+                                    <p>Release Date: {{ c.release_date }}</p>
+                                {% else %}
+                                    <h4>{{c.name}}</h4><br>
+                                    <p>Media Type: TV</p>
+                                    <p>Release Date: {{ c.first_air_date }}</p>
+                                {%endif%}
+                                <p>Popularity: {{ c.popularity }}</p><br>
+                                <a href="/{{ c.media_type }}/{{ c.id|floatformat:'0' }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                            </div>
+                            </div>
+                        </div>
+                {% endfor %}
+        {%elif credit.crew %}
+                        {% for c in credit.crew %}
+                        <div class="flip-card" style="display: inline-block;">
+                            <div class="flip-card-inner" >
+                            <div class="flip-card-front" >
+                                {% if c.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                                {% else %}
+                                {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                                {% endif %}
+                            </div>
+                            <div class="flip-card-back">
+                                <br>
+                                {% if c.media_type == 'movie' %}
+                                    <h4>{{c.title}}</h4><br>
+                                    <p>Media Type: Movie</p>
+                                    <p>Release Date: {{ c.release_date }}</p>
+                                {% else %}
+                                    <h4>{{c.name}}</h4><br>
+                                    <p>Media Type: TV</p>
+                                    <p>Release Date: {{ c.first_air_date }}</p>
+                                    <p>Job: {{ c.job }}</p>
+                                {%endif%}
+                                <p>Popularity: {{ c.popularity }}</p><br>
+                                <a href="/{{ c.media_type }}/{{ c.id|floatformat:'0' }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                            </div>
+                            </div>
+                        </div>
+                {% endfor %}
+        {%else%}
+            <p>No content.</p>
+        {%endif%}
+    </div>
+
+
+</div>
+    
+
+{% endblock %}

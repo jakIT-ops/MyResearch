@@ -1,0 +1,41 @@
+{% extends "nasapp/base.html" %}
+
+{% block content %}
+
+<h1 class="display-4 text-center mt-5">Near Earth Asteroids</h1>
+
+{% if asteroids %}
+<table class="table table-lg table-bordered table-striped w-75  mx-auto mt-5">
+    <thead>
+        <tr class="table-info text-center">
+            <th>Name</th>
+            <th colspan="2">Estimated Diameter</th>
+            <th class="col-md-3">Is Potentially Hazardous</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="table-secondary text-center">
+            <td></td>
+            <td><strong>Min (meters)</strong></td>
+            <td><strong>Max (meters)</strong></td>
+            <td></td>
+        </tr>
+        {% for asteroid in asteroids %}
+        <tr>
+            <td>{{asteroid.name}}</td>
+            <td>{{asteroid.estimated_diameter.meters.estimated_diameter_min}}</td>
+            <td>{{asteroid.estimated_diameter.meters.estimated_diameter_max}}</td>
+            <td class="text-center">
+                {% if asteroid.is_potentially_hazardous_asteroid is False %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock content %}

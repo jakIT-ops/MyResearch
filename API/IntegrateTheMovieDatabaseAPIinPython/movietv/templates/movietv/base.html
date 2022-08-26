@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MovieTV</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+  <style>
+
+    body {
+      background-color: #1a1a1d;
+    }
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    .nav.navbar-nav li a {
+      color: #c3073f; 
+      font-weight: bold;
+    }
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      color: #c3073f;
+      background-color: #1a1a1d;
+      padding: 25px;
+    }
+
+    @media (min-width: 768px) {
+        .ten-columns > .col-sm-2 {
+          width: 20%;
+        }
+    }
+
+    .flip-card {
+        background-color: transparent;
+        width: 200px;
+        height: 290px;
+        perspective: 1000px;
+        margin-bottom: 50px;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 1s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(241, 13, 13, 0.2);
+    }
+
+    .flip-card-inner2 {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 1s;
+        transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-card-inner2 {
+        transform: rotateY(180deg);
+    }
+
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    .flip-card-back {
+        background-color: #1a1a1d;
+        border-radius: 15px;
+        color: white;
+        transform: rotateY(180deg);
+    }
+  </style>
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark" style="background-color: #1a1a1d;">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+          <a class="navbar-brand" href="/home" style="color: #c3073f; font-weight: bold;">MovieTV</a>
+        </div>
+  
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/home">Home</a></li>
+            <li><a href="/movies">Movies</a></li>
+            <li><a href="/tv">TV Shows</a></li>
+            <li><a href="/people">People</a></li>
+          </ul>
+  
+          <!-- The search bar ()-->
+          <ul class="nav navbar-nav navbar-right">
+            <form action="/search/" method="get" class="form-inline my-2 my-lg-0" style="padding-right: 10px; padding-top: 8px;">
+              <select class="form-select mr-sm-2" name="type"  style="padding-left: 5px; background-color: #c3073f; color: #d6d6d6; border-radius: 5px; width: 90px; height: 33px;" class="mb-3">
+                <option value="movie">Movie</option>
+                <option value="tv">TV Show</option>
+                <option value="person">Person</option>
+              </select>
+              <input class="form-control mr-sm-2" name="query" style="width: 500px;" type="search" placeholder="Search for Movies, TV Shows or People ..." aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="background-color: #c3073f;"><i class="fa fa-search" style="font-size:18px; color: #ffffff;"></i></button>
+          </form>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+        {% block main %}{% endblock %}
+    </div>
+    
+    <footer class="container-fluid text-center">
+        <p>Copyright 1998-2022</p>
+    </footer>
+
+</body>
+</html>

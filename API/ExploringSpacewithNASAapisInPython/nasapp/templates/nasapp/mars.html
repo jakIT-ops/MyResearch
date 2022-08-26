@@ -1,0 +1,61 @@
+{% extends "nasapp/base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <form action="" method='post' class="mx-auto">
+        {% csrf_token %}
+        <table class="table table-borderless mt-4">
+            <tbody>
+                <tr>
+                    <td class="col-md-1"><label class="h5">Rover:</label></td>
+                    <td class="col-md-2">
+                        <select class="form-select" name="rover" aria-label="Default select example" required>
+                            <option value="Spirit" {% if selected_rover == "Spirit" %}selected {% endif %}>Spirit</option>
+                            <option value="Opportunity" {% if selected_rover == "Opportunity" %}selected {% endif %}>Opportunity</option>
+                            <option value="Curiosity" {% if selected_rover == "Curiosity" %}selected {% endif %}>Curiosity</option>
+                        </select>
+                    </td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"><label class="h5">Camera:</label></td>
+                    <td class="col-md-2">
+                        <select class="form-select" name="camera" aria-label="Default select example"
+                            required>
+                            <option value="navcam" {% if selected_camera == "navcam" %}selected {% endif %}>NAVCAM</option>
+                            <option value="rhaz" {% if selected_camera == "rhaz" %}selected {% endif %}>RHAZ</option>
+                            <option value="fhaz" {% if selected_camera == "fhaz" %}selected {% endif %}>FHAZ</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="form-group w-25 mx-auto">
+                            <button type="submit" id="create-btn" class="form-control btn btn-primary">Fetch</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+{% if photos %}
+<div class="w3-container mt-5">
+    <div class="container-fluid">
+        <div class="row">
+            {% for photo in photos %}
+            <div class="col-lg-3 mt-5">
+                <img class="card-img-top" src="{{photo.img_src}}" width="300" height="250" class="rounded" />
+                <div class="card-body">
+                    <p><strong>Rover name:</strong> {{photo.rover.name}}</p>
+                    <p><strong>Camera:</strong> {{photo.camera.full_name}} ({{photo.camera.name}})</p>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% else %}
+    <h1 class="display-4 text-center mt-5">No photos found</h1>
+{% endif %}
+
+{% endblock content %}

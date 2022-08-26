@@ -1,0 +1,30 @@
+{% extends "nasapp/base.html" %}
+
+{% block content %}
+
+<h1 class="display-4 text-center mt-5">Event Tracker</h1>
+
+{% if all_categories %}
+<table class="table table-lg table-bordered table-striped w-75  mx-auto mt-5">
+    <thead>
+        <tr class="table-info text-center">
+            <th>Title</th>
+            <th>Description</th>
+            <th class="col-md-2">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in all_categories %}
+        {% if category.title in selected_categories %}
+        <tr>
+            <td>{{category.title}}</td>
+            <td>{{category.description}}</td>
+            <td class="text-center"><a class="btn btn-primary col-md-6" href="{% url 'nasapp:event' category.id %}">View</a></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock content %}

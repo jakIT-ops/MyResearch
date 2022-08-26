@@ -1,0 +1,53 @@
+{% extends "movietv/base.html" %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block main %}
+<div class="container first" style="background-color: #d6d6d6; padding-top: 30px; min-height: 850px"> 
+    <div class="row ten-columns" style="margin-right: 20px; margin-left: 20px;">
+        {% if data.results%}
+            {% for d in data.results %}
+                <div class="col-sm-2">
+                    <div class="flip-card">
+                        <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                        {% if d.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ d.poster_path }}" alt="..." style="border-radius:10px;" >
+                        {% elif d.profile_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ d.profile_path }}" alt="..." style="border-radius:10px;" >
+                        {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                        {% endif %}
+
+                        </div>
+                        <div class="flip-card-back" style="border-radius:10px;">
+                            <br>
+                            {% if d.title %}
+                            <h3>{{ d.title }}</h3><br> 
+                            {% else %}
+                            <h3>{{ d.name }}</h3><br> 
+                            {% endif %}
+                            {% if d.release_date %}
+                                <p>Release Date: {{ d.release_date }}</p>
+                            {% elif d.first_air_date %}
+                                <p>Air Date: {{ d.first_air_date }}</p>
+                            {% endif %}
+                            <p>Popularity: {{ d.popularity }}</p><br>
+
+                            <a href="/{{ type }}/{{ d.id|floatformat:'0' }}" class="btn btn-primary" style="color: #d6d6d6; background-color:#c3073f; font-weight: bold;">View Details</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+                <div class="noresult" style="margin-top: 100px;text-align:center; font-size:70px; color: black;">No Results Found!</div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+{% endblock %}

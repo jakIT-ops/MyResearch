@@ -1,0 +1,13 @@
+{% extends "nasapp/base.html" %}
+
+{% block content %}
+
+<h1 class="display-3 text-center mt-2">Astronomy Picture of the Day (APOD)</h1>
+
+<div class="container-fluid mt-5 text-center">
+    <img src="{{picture.hdurl}}" class="text-center mt-2 mx-auto" alt="{{picture.title}}" width="700" height="700" />
+    <p class="h2 mt-3">{{picture.title}} ({{picture.date}})</p>
+    <p class="mt-3 m-5">{{picture.explanation}}</p>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MovieTV</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+  <style>
+
+    body {
+      background-color: #1a1a1d;
+    }
+
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    .nav.navbar-nav li a {
+      color: #c3073f; 
+      font-weight: bold;
+    }
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      color: #d6d6d6;
+      background-color: #1a1a1d;
+      padding: 25px;
+    }
+
+    .carousel-inner img {
+      width: 1240px; /* Set width to 100% */
+      margin: auto;
+      max-height:350px;
+    }
+
+    .transparent {
+        opacity: 0.5;
+      }
+
+    .borderround{
+      border-radius: 15px;
+    }
+
+  /* Hide the carousel text when the screen is less than 600 pixels wide */
+    @media (max-width: 600px) {
+        .carousel-caption {
+        display: none; 
+    }
+    }
+
+    @media (min-width: 768px) {
+        .ten-columns > .col-sm-2 {
+          width: 20%;
+        }
+    }
+
+    .flip-card {
+        background-color: transparent;
+        width: 200px;
+        height: 290px;
+        perspective: 1000px;
+        margin-bottom: 50px;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 1s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(241, 13, 13, 0.2);
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    .flip-card-back {
+        background-color: #1a1a1d;
+        border-radius: 15px;
+        color: #d6d6d6;
+        transform: rotateY(180deg);
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-dark" style="background-color: #1a1a1d;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="/home" style="color: #c3073f; font-weight: bold;">MovieTV</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active" ><a href="/home">Home</a></li>
+          <li><a href="/movies">Movies</a></li>
+          <li><a href="/tv">TV Shows</a></li>
+          <li><a href="/people">People</a></li>
+        </ul>
+
+        <!-- The search bar ()-->
+        <ul class="nav navbar-nav navbar-right">
+          <form action="/search/" method="get" class="form-inline my-2 my-lg-0" style="padding-right: 10px; padding-top: 8px;">
+              <select class="form-select mr-sm-2" name="type"  style="padding-left: 5px; background-color: #c3073f; color: #d6d6d6; border-radius: 5px; width: 90px; height: 33px;" class="mb-3">
+                <option value="movie">Movie</option>
+                <option value="tv">TV Show</option>
+                <option value="person">Person</option>
+              </select>
+              <input class="form-control mr-sm-2" name="query" style="width: 500px;" type="search" placeholder="Search for Movies, TV Shows or People ..." aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="background-color: #c3073f;"><i class="fa fa-search" style="font-size:18px; color: #ffffff;"></i></button>
+          </form>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="background-color: #1a1a1d;">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#myCarousel" data-slide-to="3"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        {% load static %} <img src='{% static "./movietv/media/mov1.jpg" %}' alt="firstimg" class="transparent">
+        <div class="carousel-caption" style="font-size:80px; font-family: 'Verdana, sans-serif'; color:#d6d6d6 ; top: 41%; right: 5%; transform: translateY(-50%);text-align: center; -webkit-animation: glow 1s ease-in-out infinite alternate; -moz-animation: glow 1s ease-in-out infinite alternate; animation: glow 1s ease-in-out infinite alternate;">
+          <p><b>Welcome!</b></p>
+          <h4>Look out for millions of the best, popular and trending movies, TV shows and people.</h4>
+          <h3><b>Explore Now</b></h3>
+        </div>  
+        
+      </div>
+
+      <div class="item">
+        {% load static %} <img src='{% static "./movietv/media/popcorns.jpg" %}' alt="secimg" class="transparent">
+        <div class="carousel-caption" style="font-size:80px; font-family: 'Verdana, sans-serif'; color: #d6d6d6 ; top:10%; transform: translateX(-30%);text-align: center; -webkit-animation: glow 1s ease-in-out infinite alternate; -moz-animation: glow 1s ease-in-out infinite alternate; animation: glow 1s ease-in-out infinite alternate;">
+          <p><b>Grab your</b></p> 
+          <p><b>Popcorn</b></p>
+        </div>      
+      </div>
+
+      <div class="item">
+        {% load static %} <img src='{% static "./movietv/media/tv4.jpg" %}' alt="secimg" class="transparent">
+        <div class="carousel-caption" style="font-size:50px; font-family: 'Verdana, sans-serif'; color: #d6d6d6 ; top:12%; transform: translateX(25%);text-align: center; -webkit-animation: glow 1s ease-in-out infinite alternate; -moz-animation: glow 1s ease-in-out infinite alternate; animation: glow 1s ease-in-out infinite alternate;">
+          <p><b>Don't miss out on best</b></p>
+          <p><b>TV shows</b></p>
+        </div>      
+      </div>
+
+      <div class="item">
+        {% load static %} <img src='{% static "./movietv/media/tv6.jpg" %}' alt="secimg" class="transparent">
+        <div class="carousel-caption" style="font-size:50px; font-family: 'Verdana, sans-serif'; color: #d6d6d6 ; top:10%; transform: translateX(-25%);text-align: center; -webkit-animation: glow 1s ease-in-out infinite alternate; -moz-animation: glow 1s ease-in-out infinite alternate; animation: glow 1s ease-in-out infinite alternate;">
+          <p><b>Look out for the</b></p>
+          <p><b>upcoming movies</b></p>
+          <p><b>and TV shows</b></p>
+        </div>      
+      </div>
+    </div>
+
+    
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev" style="padding-bottom: 20px">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="padding-bottom: 20px"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" style="padding-bottom: 20px">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="padding-bottom: 20px"></span>
+      <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div class="container-fluid text-center" style="color: #1a1a1d; background-color: #d6d6d6; margin-right: 100px; margin-left: 100px; padding-top: 20px; padding-bottom: 20px;">  
+  <h2>Trending of the Day</h2><br><br>
+  
+  <div class="row ten-columns" style="margin-right: 20px; margin-left: 20px;">
+      {% for d in data.results %}
+          <div class="col-sm-2">
+              <div class="flip-card">
+                  <div class="flip-card-inner" >
+                    <div class="flip-card-front" >
+                        <img src="https://image.tmdb.org/t/p/w200{{ d.poster_path }}" alt="..." class=borderround >
+                    </div>
+                    <div class="flip-card-back">
+                        <br>
+                        {% if d.media_type == 'movie' %}
+                        <h3>{{ d.title }}</h3><br> 
+                        {% else %}
+                        <h3>{{ d.name }}</h3><br> 
+                        {% endif %}
+                        <p>Media Type: {{ d.media_type }}</p>
+                        {% if d.media_type == 'movie' %}
+                          <p>Release Date: {{ d.release_date }}</p>
+                        {% else %}
+                          <p>Release Date: {{ d.first_air_date }}</p>
+                        {% endif %}
+                        <p>Popularity: {{ d.popularity }}</p><br>
+                        <a href="/{{ d.media_type }}/{{ d.id }}/" class="btn btn-primary" style="color: #d6d6d6; background-color:#c3073f; font-weight: bold;">View Details</a>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      {% endfor %}
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Copyright 1998-2022</p>
+</footer>
+
+</body>
+</html>

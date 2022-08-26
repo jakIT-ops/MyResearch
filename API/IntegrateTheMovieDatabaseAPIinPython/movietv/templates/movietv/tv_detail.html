@@ -1,0 +1,176 @@
+{% extends "movietv/base.html" %}
+
+{% block title %}
+    TVdetails
+{% endblock %}
+
+{% block main %}
+<div class="container first" style="background-color: #d6d6d6; "> 
+    
+    <img src="https://image.tmdb.org/t/p/w500{{ data.backdrop_path }}" alt="..." style="border-radius:15px; margin-left: 30px; margin-top: 30px;" >
+    <div class="col mov-info" style="color:#000000; margin-left:550px; margin-top: -300px; min-height: 290px;" >
+        <h2> {{ data.name }}</h2>
+        {% for g in data.genres %}
+            <h8>{{g.name}} |</h8>
+        {% endfor %}
+        
+        <h4><b>{{ data.tagline }}</b></h4>
+        <h4>Total Votes: <b>{{data.vote_count}}</b> | Vote Score: <b>{{ data.vote_average }}</b> | Popularity: <b>{{data.popularity}}</b></h4>
+        <h4>Air Date: <b>{{ data.first_air_date }}</b></h4> 
+        <h4>Episode Duration: <b>{{ data.episode_run_time }} minutes</b></h4>
+        <h4>Production companies:</h4>
+        {% for c in data.production_companies %}
+            <h8>{{c.name}} |</h8>
+        {% endfor %}
+    </div>
+    <div class="col overview" style="color:black; margin-left: 30px; margin-right: 260px; font-size: medium;">
+        <h3>Overview</h3>
+        <p>{{data.overview}}</p>
+    </div>
+    <div class="col overview" style="color:black; margin-left: 30px; font-size: medium;">
+        <h3>Seasons and Episodes</h3>
+        <p><b>Total Seasons:</b> {{data.number_of_seasons}}</p>
+        <p><b>Total Episodes:</b> {{data.number_of_episodes}}</p>
+        <h3>Official Homepage</h3>
+        {% if data.homepage %}
+            <a href={{data.homepage}} style="color:black">{{data.homepage}}</a>
+        {% else %}
+            <p>No homepage available.</p>
+        {% endif %}
+        
+    </div>
+
+    <img src="https://image.tmdb.org/t/p/w200{{ data.poster_path }}" alt="..." style="border-radius:10px; margin-left: 910px; margin-top: -310px" >
+    
+    <div class="season" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Seasons</h2></div>
+
+    <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+        {% for c in data.seasons %}
+                <div class="flip-card" style="display: inline-block;">
+                    <div class="flip-card-inner" >
+                      <div class="flip-card-front" >
+                          {% if c.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                          {% else %}
+                          {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                          {% endif %}
+                      </div>
+                      <div class="flip-card-back">
+                          <br>
+                          <h4>{{c.name}}</h4><br>
+                          <h4>Air Date: {{c.air_date}}</h4><br>
+                          <h4>Episode Count: {{c.episode_count}}</h4><br>
+                          <a href="/tv/{{ data.id }}/season/{{c.season_number}}" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                      </div>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+
+    <div class="cast" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Cast</h2></div>
+
+    <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+        {% for c in credits.cast %}
+                <div class="flip-card" style="display: inline-block;">
+                    <div class="flip-card-inner" >
+                      <div class="flip-card-front" >
+                          {% if c.profile_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ c.profile_path }}" alt="..." style="border-radius:10px;" >
+                          {% else %}
+                          {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                          {% endif %}
+                      </div>
+                      <div class="flip-card-back">
+                          <br>
+                          <h4>{{c.name}}</h4><br>
+                          <h4>Character Name:</h4>
+                          <p>{{c.character}}</p><br>
+                          <h4>Known for {{c.known_for_department}}</h4><br>
+                          <a href="/person/{{ c.id }}" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                      </div>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+
+    <div class="crew" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Crew</h2></div>
+
+    <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+        {% for c in credits.crew %}
+                <div class="flip-card" style="display: inline-block;">
+                    <div class="flip-card-inner" >
+                      <div class="flip-card-front" >
+                          {% if c.profile_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ c.profile_path }}" alt="..." style="border-radius:10px;" >
+                          {% else %}
+                          {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                          {% endif %}
+                      </div>
+                      <div class="flip-card-back">
+                          <br>
+                          <h4>{{c.name}}</h4><br>
+                          <h4>Job:</h4>
+                          <p>{{c.job}}</p><br>
+                          <h4>Known for {{c.known_for_department}}</h4><br>
+                          <a href="/person/{{ c.id }}" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                      </div>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+
+    <div class="col overview" style="color:black; margin-left: 30px; margin-right: 260px; font-size: medium;">
+        <h3>Airing on networks</h3>
+        {% for d in data.networks %}
+
+            <h8>{{d.name}} |</h8>
+
+        {% endfor %}
+    </div>
+
+    <div class="trailer" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Trailer and Short Videos</h2></div>
+    
+    <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+        {% for v in videos.results%}
+            <div class="col-sm-6">
+                <div class="embed-responsive embed-responsive-16by9" style= "margin-bottom: 20px; margin-right: 120px;">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ v.key }}"></iframe>
+                </div>
+            </div>    
+        {% endfor %}
+    </div>
+
+    <div class="rcm" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Recommended TV Shows</h2></div>
+    
+    <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+        {% if recommendations.results %}
+        {% for c in recommendations.results %}
+                <div class="flip-card" style="display: inline-block;">
+                    <div class="flip-card-inner" >
+                      <div class="flip-card-front" >
+                          {% if c.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                          {% else %}
+                          {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                          {% endif %}
+                      </div>
+                      <div class="flip-card-back">
+                          <br>
+                          <h4>{{c.name}}</h4><br>
+                          <p>Release Date: {{ c.first_air_date }}</p><br>
+                        <p>Popularity: {{ c.popularity }}</p><br>
+                        <a href="/{{ c.media_type }}/{{ c.id|floatformat:'0'}}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                      </div>
+                    </div>
+                </div>
+        {% endfor %}
+
+        {% else %}
+        <div class="norec" style="color: black"><p>No Recommendations at the moment.</p></div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

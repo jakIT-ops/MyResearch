@@ -1,0 +1,87 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html style="height: 100%">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    {% bootstrap_css %} {% bootstrap_javascript jquery='full' %}
+    <style></style>
+  </head>
+  <body>
+    <div class="bg-dark">
+      <h2 style="text-align: center; color: white; margin: 0px">
+        Image Analysis App
+      </h2>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="navbar" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'apis:ocr' %}">OCR</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'apis:imageanalysis' %}"
+              >Analysis</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="margin-left: 20%; margin-top: 5%; margin-right: 20%">
+      <h3>About</h3>
+      <p>
+        This App is a demo for the Microsoft Computer Vision API. <br /><br />
+        MS Computer Vision gives access to advanced algorithms for image
+        processing and returning information. In this App you can provide a URL
+        that is analyzed by the algorithm depending on the inputs and user
+        choices.
+      </p>
+      <h3>Functionalities</h3>
+      <p style="padding-bottom: 3%">
+        To start you will have to add your subscription_key and endpoint on
+        these two by creating a MS Computer Vision resource on Azure.
+        <br /><br />
+        Following are the functionalities provided in the App: <br />
+        <br />
+        1. Optical Character Recognition (OCR): <br />
+        &emsp; &emsp; &emsp; It includes reading printed and hand-written (only
+        English) text from images and PDFs.<br /><br />
+        2. Image Analysis: <br />
+        &emsp; &emsp; &emsp; - Get Description <br />
+        &emsp; &emsp; &emsp; - Get Category <br />
+        &emsp; &emsp; &emsp; - Get Tags <br />
+        &emsp; &emsp; &emsp; - Get Description <br />
+        &emsp; &emsp; &emsp; - Detect Objects <br />
+        &emsp; &emsp; &emsp; - Detect Popular Brands <br />
+        &emsp; &emsp; &emsp; - Detect Faces <br />
+        &emsp; &emsp; &emsp; - Detect Adult, Racy, and Gory Content <br />
+        &emsp; &emsp; &emsp; - Get Color Schemes <br />
+        &emsp; &emsp; &emsp; - Detect Celebrities <br />
+        &emsp; &emsp; &emsp; - Detect Landmarks <br />
+        &emsp; &emsp; &emsp; - Detect Image Type <br />
+      </p>
+      <div style="padding-bottom: 10%;">
+        <p> To access these functionalities press the buttons below: </p><br />
+        <a 
+          class="btn btn-primary" 
+          href="{% url 'apis:ocr' %}" 
+          role="button"
+          >OCR</a>
+        <a
+          class="btn btn-primary"
+          href="{% url 'apis:imageanalysis' %}"
+          role="button"
+          >Analysis</a>
+        </div>
+      </div>
+  </body>
+</html>

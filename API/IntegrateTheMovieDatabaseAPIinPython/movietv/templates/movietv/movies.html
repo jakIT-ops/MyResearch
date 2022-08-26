@@ -1,0 +1,159 @@
+{% extends "movietv/base.html" %}
+
+{% block title %}
+    Movies
+{% endblock %}
+
+{% block main %}
+
+<div class="container first" style="background-color: #d6d6d6; "> 
+    <div class="latest" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Latest Movie</h2></div>
+
+        <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+           <div class="flip-card" style="display: inline-block;">
+                <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                            {% if latest.poster_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ latest.poster_path }}" alt="..." style="border-radius:10px;" >
+                            {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                            {% endif %}
+                        </div>
+                        <div class="flip-card-back">
+                            <br>
+                            <h4>{{latest.title}}</h4><br>
+                            <p>Release Date: {{ latest.release_date }}</p>
+                            <p>Popularity: {{ latest.popularity }}</p><br>
+                            <a href="/movie/{{ latest.id }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="trending" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Trending Movies of the Week</h2></div>
+
+        <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+            {% for c in trending.results %}
+           <div class="flip-card" style="display: inline-block;">
+                <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                            {% if c.poster_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                            {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                            {% endif %}
+                        </div>
+                        <div class="flip-card-back" style="text-align:center">
+                            <br>
+                            <h4>{{c.title}}</h4><br>
+                            <p>Release Date: {{c.release_date }}</p>
+                            <p>Popularity: {{ c.popularity }}</p><br>
+                            <a href="/movie/{{ c.id }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="popular" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Popular Movies</h2></div>
+
+        <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+            {% for c in popular.results %}
+           <div class="flip-card" style="display: inline-block;">
+                <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                            {% if c.poster_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                            {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                            {% endif %}
+                        </div>
+                        <div class="flip-card-back" style="text-align:center">
+                            <br>
+                            <h4>{{c.title}}</h4><br>
+                            <p>Release Date: {{c.release_date }}</p>
+                            <p>Popularity: {{ c.popularity }}</p><br>
+                            <a href="/movie/{{ c.id }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="top" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Top-rated Movies</h2></div>
+
+        <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+            {% for c in top.results %}
+           <div class="flip-card" style="display: inline-block;">
+                <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                            {% if c.poster_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                            {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                            {% endif %}
+                        </div>
+                        <div class="flip-card-back" style="text-align:center">
+                            <br>
+                            <h4>{{c.title}}</h4><br>
+                            <p>Release Date: {{c.release_date }}</p>
+                            <p>Popularity: {{ c.popularity }}</p><br>
+                            <a href="/movie/{{ c.id }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="upcoming" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Upcoming Movies</h2></div>
+
+        <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+            {% for c in upcoming.results %}
+           <div class="flip-card" style="display: inline-block;">
+                <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                            {% if c.poster_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                            {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                            {% endif %}
+                        </div>
+                        <div class="flip-card-back" style="text-align:center">
+                            <br>
+                            <h4>{{c.title}}</h4><br>
+                            <p>Release Date: {{c.release_date }}</p>
+                            <p>Popularity: {{ c.popularity }}</p><br>
+                            <a href="/movie/{{ c.id }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="now" style="color:black; margin-left: 30px; font-weight: bold;"><h2>Currently Playing Movies</h2></div>
+
+        <div class="scrolling-wrapper" style="margin-left:30px; overflow-x: scroll; overflow-y: hidden;white-space: nowrap;">
+            {% for c in now.results %}
+           <div class="flip-card" style="display: inline-block;">
+                <div class="flip-card-inner" >
+                        <div class="flip-card-front" >
+                            {% if c.poster_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ c.poster_path }}" alt="..." style="border-radius:10px;" >
+                            {% else %}
+                            {% load static %} <img src='{% static "./movietv/media/noimg.png" %}' alt="firstimg" style="border-radius:10px; width:170px; height:275px">
+                            {% endif %}
+                        </div>
+                        <div class="flip-card-back" style="text-align:center">
+                            <br>
+                            <h4>{{c.title}}</h4><br>
+                            <p>Release Date: {{c.release_date }}</p>
+                            <p>Popularity: {{ c.popularity }}</p><br>
+                            <a href="/movie/{{ c.id }}/" class="btn btn-primary" style="background-color: #c3073f; color:#c3c3c3; font-weight: bold;">View Details</a>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+{% endblock %}

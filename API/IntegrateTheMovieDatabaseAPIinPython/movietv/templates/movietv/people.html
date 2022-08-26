@@ -1,0 +1,32 @@
+{% extends "movietv/base.html" %}
+
+{% block title %}
+   People
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid text-center" style="color: #1a1a1d; background-color: #d6d6d6; margin-right: 80px; margin-left: 80px; padding-top: 20px; padding-bottom: 20px;">  
+    <h2>Popular People</h2><br><br>
+    
+    <div class="row ten-columns" style="margin-left:60px" >
+        {% for d in popular.results %}
+            <div class="col-sm-4">
+                <div class="flip-card">
+                    <div class="flip-card-inner" >
+                      <div class="flip-card-front" >
+                          <img src="https://image.tmdb.org/t/p/w200{{ d.profile_path }}" alt="..." style="border-radius:20px">
+                      </div>
+                      <div class="flip-card-back">
+                          <br>
+                          <h3>{{ d.name }}</h3><br><br> 
+                        
+                          <p>Popularity: {{ d.popularity }}</p><br><br>
+                          <a href="/person/{{ d.id }}/" class="btn btn-primary" style="color: #d6d6d6; background-color:#c3073f; font-weight: bold;">View Details</a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

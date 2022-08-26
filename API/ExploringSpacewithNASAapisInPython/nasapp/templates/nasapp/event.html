@@ -1,0 +1,32 @@
+{% extends "nasapp/base.html" %}
+
+{% block content %}
+
+{% if events %}
+<table class="table table-lg table-bordered table-striped w-75  mx-auto mt-5">
+    <thead>
+        <tr class="table-info text-center">
+            <th>Title</th>
+            <th>Description</th>
+            <th>Source</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr>
+            <td>{{event.title}}</td>
+            <td>{{event.description}}</td>
+            <td>
+                {%for source in event.sources%}
+                    <a href="{{event.link}}" target="_blank">{{source.url}}</a>
+                {%endfor%}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <h1 class="display-3 text-center mt-5">No events found</h1>
+{% endif %}
+
+{% endblock content %}
