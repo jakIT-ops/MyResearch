@@ -1,0 +1,439 @@
+# 1. Fetching and Pulling Content
+
+## Two Git Repos: 'git_origin' and 'git_cloned'
+
+### Creating a repository and cloning it
+
+```bash
+1   mkdir -p lgthw_pull
+2   cd lgthw_pull
+3   mkdir git_origin
+4   cd git_origin
+5   git init
+6   echo 'first commit' > file1
+7   git add file1
+8   git commit -am file1
+9   cd ..
+10  git clone git_origin git_cloned
+```
+
+### Similarities and differences
+
+The two repositories (the folders: git_origin and git_cloned) contain identical content:
+
+```bash
+11  diff git_origin/file1 git_cloned/file1
+```
+
+However, their .git/config files differ in instructive ways.
+
+The git_origin folder has this in its .git/config file:
+
+```bash
+12  cat git_origin/.git/config
+```
+
+While the git_cloned folder has this in its .git/config file:
+
+```bash
+13  cat git_cloned/.git/config
+```
+
+### Remote
+
+Its URL is (in this case) pointed at the directory git_origin that is local on the host. URLs can also be an http:// or https:// one or even ssh:// or git://. The last is a Git-specific protocol that is rarely seen these days. When you see a Git repository cloned with git@ (i.e., git@github.com:kubernetes/kubernetes), then this is in fact using the ssh:// protocol under the hood.
+
+
+```bash
+cd git_cloned
+git remote
+```
+
+### Origin
+
+The name origin is the default name for a remote, but it does not have a special meaning. It could be renamed to BitBucket or GitLab, for example.
+
+### Fetch and push
+
+The above remotes are divided into (fetch) and (push) actions. These relate to two different actions on remotes, i.e., getting changes from a remote or pushing changes to a remote.
+
+These actions can work against different remotes. For example, the output of git remote -v might be:
+
+```bash
+16  git remote -v
+```
+
+# 2. Working With Multiple Repositories
+
+## Three-Linked Repositories
+
+### Remote changes into your `master` branch
+
+Let’s see how you can make changes into your master branch without going to origin.
+
+#### Problem
+
+The question is: how does Bob get Alice’s change into his master branch without going to the origin?
+
+This is a common scenario in distributed teams. If you consider that Git was created for managing the codebase of the Linux operating system, it’s easy to imagine the git_origin as Linus Torvalds’ repository, Alice as a contributor, and Bob as a so-called lieutenant.
+
+#### Solution
+
+So here is how:
+
+1. ADD Alice’s repository as a remote to Bob’s.
+
+2. FETCH Alice’s updated master branch.
+
+3. MERGE Alice’s master branch into Bob’s local one.
+
+As you have already seen, steps 2 and 3 can be collapsed into a git pull, but it is more instructive to keep these separate.
+
+* 1. ADD Alice’s repository as a remote to Bob’s.
+
+First, Bob needs to add Alice’s repository as a remote.
+
+```bash
+cd ../bob_cloned
+git remote add alice ../alice_cloned
+git remote -v
+```
+
+You have now linked up your repository to Alice’s and given it the name alice.
+
+2. FETCH Alice’s updated master branch.
+
+```bash
+20  git fetch alice master
+```
+
+Alice’s master branch is now fetched to your local repository.
+```bash
+21  git branch -vv -a
+```
+
+3. MERGE Alice’s master branch into Bob’s local one:
+
+```bash
+22  git merge alice/master
+23  cat file1
+```
+
+You may be wondering why you use alice/master and not remotes/alice/master, as the output of git branch -vv -a tells you. You can run:
+
+```bash
+24  git merge remotes/alice/master
+```
+It will do the same. Git assumes that the branch is a remote (presumably from seeing the */* in the branch) and adds the remotes for you.
+
+### Gis's intented purpose vs. actual use
+
+This “Lieutenant’s model” is one example of a Git workflow. Although it was the one Git was originally created for, it is still common for developers to use a traditional centralized model around a repository such as GitLab or BitBucket.
+
+This is why people make jokes when GitHub is down. Git is designed to be a distributed source control tool, but the simplicity of depending on a central server is also a powerful and tempting model. In any case, Git can support both models.
+
+# 3. Pushing Code 
+
+## 3.1 Creating and Pushing Branches
+
+### Setup
+
+```bash
+1   mkdir -p lgthw_pushing
+2   cd lgthw_pushing
+3   mkdir git_origin
+4   cd git_origin
+5   git init
+6   echo 'first commit' > file1
+7   git add file1
+8   git commit -am file1
+9   cd ..
+10  git clone git_origin git_clone
+```
+
+As you can see, there are no branches on either the origin or the clone other than the default (master):
+
+```bash
+11  cd git_origin
+12  git branch -a -v
+13  cd ../git_clone
+14  git branch -a -v
+```
+
+### Creating branch and pushing it 
+
+Now you’re going to create a branch on the clone, do some work on it, and then push it to the remote repository.
+
+This is a common use-case, as users may experiment with different branches locally and then decide they want to share their work with others by pushing it to a commonly-accessible remote repository, e.g., on GitHub.
+
+```bash
+15  git checkout -b abranch
+16  echo 'cloned abranch commit' >> file1
+17  git commit -am 'cloned abranch commit'
+18  git push origin abranch
+```
+
+## 3.2 Pushing to Repositories With Different Content 
+
+### Same branch name but different content?
+
+```bash
+1   mkdir git_origin
+2   cd git_origin
+3   git init
+4   echo 'first commit' > file1
+5   git add file1
+6   git commit -am file1
+7   cd ..
+8   git clone git_origin git_clone
+9   cd git_clone
+10  git checkout -b abranch
+11  echo 'cloned abranch commit' >> file1
+12  git commit -am 'cloned abranch commit'
+13  cd ../git_origin
+14  git checkout -b abranch
+15  echo 'origin abranch commit' >> file1
+16  git commit -am 'origin abranch commit'
+17  cd ../git_clone
+18  git push origin abranch:abranch
+```
+
+## 3.3 The Branch Exists Only On The Remote
+
+### Branch on remote only
+
+It is common to have a branch that exists on a remote repository but not in your local repository. Maybe someone else pushed a branch up or has made a pull request from a branch in that remote repository.
+
+### Example
+
+Type the following out to simulate that state of affairs:
+
+```bash
+1   mkdir git_origin
+2   cd git_origin
+3   git init
+4   echo 'first commit' > file1
+5   git add file1
+6   git commit -am file1
+7   cd ..
+8   git clone git_origin git_clone
+9   cd git_origin
+10  git checkout -b abranch
+11  echo 'origin abranch commit' >> file1
+12  git commit -am 'cloned abranch commit'
+13  git branch -a
+```
+
+```bash
+14  cd ../git_clone
+15  git branch -a
+16  git remote -v
+```
+
+## 3.4 Tracking Remote Branches With Different Names
+
+### Tracking a branch
+
+More rarely, you may want to track a branch on the remote repository that has a different name. Or you may want to manually mark the local branch as tracking a specific remote one.
+
+```bash
+git push
+```
+### Reproducing the situation
+
+```bash
+2   rm -rf git_origin git_clone
+3   mkdir git_origin
+4   cd git_origin
+5   git init
+6   echo 'first commit' > file1
+7   git add file1
+8   git commit -am file1
+9   cd ..
+10  git clone git_origin git_clone
+11  cd git_clone
+12  git checkout -b abranch
+13  echo 'origin abranch commit' >> file1
+14  git commit -am 'cloned abranch commit'
+15  git push
+```
+
+
+# 4. Git Submodules
+
+### Submodules
+
+Submodules are a useful concept and often seen in real projects.
+
+Git submodules can be very confusing if you stumble into them without much preparation or experience. Following this tutorial, you should have a good understanding of a simple submodule workflow and what is going on when you run the core submodule commands.
+
+Submodules allow you to loosely link different Git repositories together so that they are bundled together. At the same time, it ensures that changing one will not break the other.
+
+Sometimes, you want to include one repository in another but do not want to simply copy it over and have to maintain its changes separately. Submodules allow you to manage the separate codebase within your repository without affecting the other repository.
+
+If this wasn’t clear, re-read the above slowly. If it’s still not clear, follow the example in the following lesson and see if it makes more sense.
+
+## 4.1 A Worked example
+
+### Maintainer
+
+```bash
+1   mkdir -p lgthw_submodules
+2   cd lgthw_submodules
+3   mkdir alicelib
+4   cd alicelib
+5   git init
+6   echo 'A' > file1
+7   git add file1
+8   git commit -am 'A'
+9   git checkout -b experimental      # Branch to experimental
+10  echo 'C - EXPERIMENTAL' >> file1
+11  git commit -am EXPERIMENTAL
+12  git checkout master
+13  echo 'B' >> file1
+14  git commit -am 'B'
+```
+
+### Using code from a specific branch
+
+Now Bob wants to use Alice’s library for his own code but specifically wants to use what’s on the experimental branch.
+
+One option is to copy the code over directly, but that seems to be against the spirit of Git.
+
+If an improvement is made on the experimental branch or Bob wants to move later to follow what’s on the master branch, then he must copy over the code he wants. For one file, it might be manageable. But managing this will be completely impractical for a more realistic and large project.
+
+Another option is to check out the code in another folder and link to it in some predictable way in the code (e.g., your code might run source ../alice_experimental). Again, this causes management problems, as the user checking out the source must remember to keep code outside this Git repository in a certain place for it all to work.
+
+## Cloning a Project With Submodules
+
+Submodules have a special status within Git repositories. Since they are both included within a repository and at the same time reference as a remote repository, a simple clone will not check out the included submodule. Let’s show that:
+
+```bash
+1   cd ../..
+2   git clone bob_repo bob_repo_cloned
+3   cd bob_repo_cloned
+4   ls -1
+5   cd alicelib
+6   ls
+7   cd ..
+```
+
+### The `git clonse --recursive` flag
+
+Fortunately, there is an easier way. You can clone the repository with a `--recursive` flag to automatically init and update any submodules (and submodules of those submodules ad infinitum) within the cloned repository:
+
+```bash
+12  cd ..
+13  git clone --recursive bob_repo bob_repo_cloned_recursive
+```
+
+# What Are Pull Requestss?
+
+### Pull request
+
+A “pull request” is a request from a user for another user to accept a change that has been committed elsewhere.
+
+This request can be in any form. You can send an email with the diffs to the maintainer, fork, and branch. You can then send a reference to the branch, branch on the maintainer’s repository, and mail them the branch name, and put a request in plain English on a post-it. - Whatever works!
+
+### GitHub pull requests
+
+For this section, you will be looking specifically at the GitHub model of pull requests. Not all pull requests and relationships between repositories are managed in exactly the same way among different Git servers.
+
+The standard GitHub model is to:
+
+* Fork the repository
+
+* Make a branch on the forked repository
+
+* Make changes on this branch
+
+* Make a pull request to the original repository to merge this branch’s changes
+
+Your task now is to do this on the GitHub repository!
+
+There is a file called records/trained_users.txt in this repository. You’re going to add your name to it and raise that change as a pull request.
+
+Remember that this is just one model of pull request! This lesson won’t cover details on the others, but just be aware that they can differ so you are not surprised in the future.
+
+If you haven’t created a GitHub account, please do so now. It’s free. Go to https://github.com and follow the instructions to sign up.
+
+### Branch on the forked repository
+
+```bash
+1   git clone https://github.com/YOURUSERNAME/learngitthehardway
+2   cd learngitthehardway
+3   git checkout -b myfirstbranch
+4   git status
+```
+
+###  Make a change on the branch
+
+```bash
+5   echo 'my change to the README' >> README.md
+6   git commit -am 'my change to the README'
+7   git push -u origin myfirstbranch
+```
+
+### Process to create a pull request
+
+I won’t repeat it here because the workflow can change. But in essence, the general process is to:
+
+* Go to your branch.
+* Generate a new pull request.
+* Fill out the form.
+* Wait.
+* Celebrate your PR’s acceptance into the code, or chase the maintainer (nicely!) for an update.
+
+You can create a pull request across forks (a request to the upstream (original) repository) or against another branch in a GitHub repository. “Across forks” is what’s most commonly meant by a public GitHub PR, which is a request to accept a change made to a repository under your control to a repository under someone else’s (usually more senior to the project).
+
+### Pull requests in practice: rebasing
+
+Maintainers will often ask that you rebase your branch to the principal branch (usually master) before making a pull request. You will remember the git rebase. If you don’t remember, you might want to go back and read over it again.
+
+Maintainers will want you to rebase so that the work of merging any changes made, since you forked from the origin, is done by you who is the submitter rather than them. This also makes the history of the main line easier.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
